@@ -23,8 +23,12 @@ The following configuration has been tested with a vanilla `.emacs.d`. Trying to
 (add-to-list 'auto-mode-alist '("\\.tal\\'" . uxntal-mode))
 ```
 
+## Next steps
+
+- add keybindings to build and run the current buffer
+
 ## Screenshot
 
-uxntal-mode with misterioso theme on a vanilla Emacs installation
+uxntal-mode with gruvbox-dark-medium theme on a vanilla Emacs installation
 
 ![uxntal-mode screenshot with misterioso theme on a vanilla Emacs installation](uxntal-mode.png)
