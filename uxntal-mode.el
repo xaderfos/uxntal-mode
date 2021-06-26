@@ -7,7 +7,15 @@
 ;;; Code:
 
 (defvar uxntal-highlights
-      '(
+  '(
+        ; Blocks
+        ;: These do not support multi-line expansion yet.
+        ;; Unfortunately it is unnecessarily complicated to implement it in Emacs...
+        ("(\\|)\\|\\[\\|\\]" . font-lock-comment-delimiter-face) ; comment delimiters
+        ("(\\(\s?TODO\s\\|\s?FIXME\s\\)\\(.*\\))" (1 font-lock-warning-face) (2 font-lock-comment-face)) ; TODO/FIXME comment
+        ("(\\(.*\\))" (1 font-lock-comment-face)) ; comment content
+        ("%[[:graph:]]+[[:blank:]]+{.*}" . font-lock-type-face) ; macros
+
         ; Get
         ("\\.[[:graph:]]+\s\\(DEI\\|LDZ\\)2?" . font-lock-builtin-face)
         (",[[:graph:]]+\s\\(LDR\\)2?" . font-lock-builtin-face)
@@ -31,14 +39,6 @@
         ("\\.[[:graph:]]+\s?" . font-lock-preprocessor-face) ; zero-page
         (",[[:graph:]]+\s?" . font-lock-variable-name-face) ; relative
         ("\\(;\\|:\\)[[:graph:]]+\s?" . font-lock-type-face) ; absolute/raw
-
-        ; Blocks
-        ;: These do not support multi-line expansion yet.
-        ;; Unfortunately it is unnecessarily complicated to implement it in Emacs...
-        ("(\\|)\\|\\[\\|\\]" . font-lock-comment-delimiter-face) ; comment delimiters
-        ("(\\(\s?TODO\s\\|\s?FIXME\s\\)\\(.*\\))" (1 font-lock-warning-face) (2 font-lock-comment-face)) ; TODO/FIXME comment
-        ("(\\(.*\\))" (1 font-lock-comment-face)) ; comment content
-        ("%[[:graph:]]+[[:blank:]]+{.*}" . font-lock-type-face) ; macros
 
         ; Hex
         ("#[0-9a-f]+\s?" . font-lock-doc-face)

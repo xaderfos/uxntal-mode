@@ -23,5 +23,8 @@ The following configuration has been tested with a vanilla `.emacs.d`. Trying to
 (add-to-list 'auto-mode-alist '("\\.tal\\'" . uxntal-mode))
 ```
 
-## TODO
-- Push to MELPA?
+## Screenshot
+
+uxntal-mode with misterioso theme on a vanilla Emacs installation
+
+![uxntal-mode screenshot with misterioso theme on a vanilla Emacs installation](uxntal-mode.png)
