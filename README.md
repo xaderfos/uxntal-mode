@@ -2,9 +2,7 @@
 
 A bare bones emacs major mode for [Uxntal](https://wiki.xxiivv.com/site/uxntal.html), the programming language of the [Uxn stack-machine](https://wiki.xxiivv.com/site/uxn.html).
 
-I have tried to replicate the [Sublime Text highlight rules](https://git.sr.ht/~rabbits/uxn/tree/master/item/etc/tal.sublime-syntax) already include in Uxn but multiline comments are not supported yet.
-
-I have never written an emacs mode before, so please be kind <3
+I have tried to replicate the [Sublime Text highlight rules](https://git.sr.ht/~rabbits/uxn/tree/master/item/etc/tal.sublime-syntax) already included in Uxn but multiline comments are not supported yet. I have never written an emacs mode before, so please be kind <3
 
 Contributions welcomed!
 
