@@ -45,11 +45,25 @@
         
         ))
 
+(defun uxntal-eval-buffer ()
+  (interactive)
+  (when buffer-file-name
+    (let ((out (concat "/tmp/" (substring (buffer-name) 0 -4) ".rom")))
+      (message (concat "building " (buffer-name) "..."))
+      (shell-command (concat "uxnasm " (buffer-file-name) " " out " >/dev/null") "*Uxn*")
+      (message (concat "launching " out "..."))
+      (shell-command (concat "uxnemu " out " &") "*Uxn*")
+      )))
+
+(add-to-list 'display-buffer-alist '("*Uxn*" display-buffer-no-window (nil)))
+
 (define-derived-mode uxntal-mode
   fundamental-mode "Uxntal"
   "Major mode for editing uxntal language code."
   (setq font-lock-string-face nil)
   (setq font-lock-defaults '(uxntal-highlights)))
+
+(define-key uxntal-mode-map (kbd "C-x C-e") 'uxntal-eval-buffer)
 
 (provide 'uxntal-mode)
 ;;; uxntal-mode.el ends here
