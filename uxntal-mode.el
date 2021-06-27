@@ -1,5 +1,7 @@
 ;;; uxntal-mode --- Major mode for uxntal code highlighting
 
+;;; Version: 0.1.0
+
 ;;; Commentary:
 
 ;; Visit https://wiki.xxiivv.com/site/uxntal.html for more details about the language
@@ -41,21 +43,35 @@
         ("\\(;\\|:\\)[[:graph:]]+\s?" . font-lock-type-face) ; absolute/raw
 
         ; Hex
-        ("#[0-9a-f]+\s?" . font-lock-doc-face)
-        
-        ))
+        ("#[0-9a-f]+\s?" . font-lock-doc-face))
+  "Uxntal highlighting based on Sublime Text syntax included in Uxn's code
+https://git.sr.ht/~rabbits/uxn/tree/master/item/etc/tal.sublime-syntax.
+The only extra addition is the hex highlighting")
 
+;; Add a hook so that users can run then own code when running this mode
+(defvar uxntal-mode-hook nil)
+
+
+;; Autoload mode for .tal buffers
+(add-to-list 'auto-mode-alist '("\\.tal\\'" . uxntal-mode))
+
+;; Keep assembler and emulator output in the background
+(add-to-list 'display-buffer-alist '("*Uxntal*" display-buffer-no-window (nil)))
+
+
+;; NOTE: Check this for exec-path and PATH issues https://www.emacswiki.org/emacs/ExecPath
 (defun uxntal-eval-buffer ()
+  "Assemble and run the current buffer's file (it will miss any unsaved changes).
+TODO improve this so that it actually processes the buffer and not the file"
   (interactive)
   (when buffer-file-name
     (let ((out (concat "/tmp/" (substring (buffer-name) 0 -4) ".rom")))
-      (message (concat "building " (buffer-name) "..."))
-      (shell-command (concat "uxnasm " (buffer-file-name) " " out " >/dev/null") "*Uxn*")
-      (message (concat "launching " out "..."))
-      (shell-command (concat "uxnemu " out " &") "*Uxn*")
-      )))
+      (message (concat "Assembling " (buffer-name) "..."))
+      (if (= 0 (call-process "uxnasm" nil "*Uxntal*" nil (buffer-name) out))
+      (progn (message (concat "Launching " out "..."))
+	     (shell-command (concat "uxnemu " out " &") "*Uxntal*"))
+      (message (concat "Failed to assemble " out))))))
 
-(add-to-list 'display-buffer-alist '("*Uxn*" display-buffer-no-window (nil)))
 
 (define-derived-mode uxntal-mode
   fundamental-mode "Uxntal"
@@ -63,7 +79,9 @@
   (setq font-lock-string-face nil)
   (setq font-lock-defaults '(uxntal-highlights)))
 
+;; Key Bindings
 (define-key uxntal-mode-map (kbd "C-x C-e") 'uxntal-eval-buffer)
+
 
 (provide 'uxntal-mode)
 ;;; uxntal-mode.el ends here
