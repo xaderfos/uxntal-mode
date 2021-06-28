@@ -35,9 +35,6 @@
         (",[[:graph:]]+\s\\(STR\\)2?" . font-lock-builtin-face)
         (";[[:graph:]]+\s\\(LDA\\)2?" . font-lock-builtin-face)
 
-        ; Label/Sub-label
-        ("\\(@\\|&\\)[[:graph:]]+\s?" . font-lock-function-name-face)
-
         ; Jump/Pad
         ("\\(|\\|\\$\\)[[:graph:]]+\s?" . font-lock-keyword-face)
 
@@ -49,6 +46,9 @@
         (",[[:graph:]]+\s?" . font-lock-variable-name-face) ; relative
         ("\\(;\\|:\\)[[:graph:]]+\s?" . font-lock-type-face) ; absolute/raw
 
+        ; Label/Sub-label
+        ("\\(@\\|&\\)[[:graph:]]+\s?" . font-lock-function-name-face)
+	
         ; Hex
         ("#[0-9a-f]+\s?" . font-lock-doc-face))
   "Uxntal highlighting based on Sublime Text syntax included in Uxn's code
