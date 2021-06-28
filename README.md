@@ -35,7 +35,7 @@ The following configuration has been tested with a vanilla `.emacs.d`. Trying to
 |--|--|--|
 |C-x C-e| uxntal-eval-buffer|Build and run the current buffer. The resulting rom is created in `/tmp/{buffer-name}.rom`|
 |C-c t h| uxntal-insert-decimal-as-hex|Convert a user provided decimal to hex and insert at point|
-|C-c t d| uxntal-decimal-value|Message the decimal value of `current-word` in the mini-buffer|
+|C-c t d| uxntal-decimal-value|Message the decimal value of a hex under the cursor in the mini-buffer|
 
 ## Screenshot
 
