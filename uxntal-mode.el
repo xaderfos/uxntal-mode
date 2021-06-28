@@ -1,6 +1,6 @@
 ;;; uxntal-mode --- Major mode for uxntal code highlighting
 
-;;; Version: 0.1.0
+;;; Version: 0.2.0
 
 ;;; Commentary:
 
@@ -8,6 +8,13 @@
 
 ;;; Code:
 
+;; Add a hook so that users can run then own code when running this mode
+(defvar uxntal-mode-hook nil)
+
+;; Variables
+(defvar uxntal-assembler nil)
+
+;; Code highlighting
 (defvar uxntal-highlights
   '(
         ; Blocks
@@ -48,9 +55,6 @@
 https://git.sr.ht/~rabbits/uxn/tree/master/item/etc/tal.sublime-syntax.
 The only extra addition is the hex highlighting")
 
-;; Add a hook so that users can run then own code when running this mode
-(defvar uxntal-mode-hook nil)
-
 
 ;; Autoload mode for .tal buffers
 (add-to-list 'auto-mode-alist '("\\.tal\\'" . uxntal-mode))
@@ -58,20 +62,32 @@ The only extra addition is the hex highlighting")
 ;; Keep assembler and emulator output in the background
 (add-to-list 'display-buffer-alist '("*Uxntal*" display-buffer-no-window (nil)))
 
-
 ;; NOTE: Check this for exec-path and PATH issues https://www.emacswiki.org/emacs/ExecPath
 (defun uxntal-eval-buffer ()
   "Assemble and run the current buffer's file (it will miss any unsaved changes).
 TODO improve this so that it actually processes the buffer and not the file"
   (interactive)
   (when buffer-file-name
-    (let ((out (concat "/tmp/" (substring (buffer-name) 0 -4) ".rom")))
-      (message (concat "Assembling " (buffer-name) "..."))
-      (if (= 0 (call-process "uxnasm" nil "*Uxntal*" nil (buffer-name) out))
-      (progn (message (concat "Launching " out "..."))
-	     (shell-command (concat "uxnemu " out " &") "*Uxntal*"))
-      (message (concat "Failed to assemble " out))))))
+    (let* ((program (substring (buffer-name) 0 -4))
+	  (out (concat "/tmp/" program ".rom"))
+	  (assembler (if uxntal-assembler uxntal-assembler "uxnasm")))
+      
+      (message (concat assembler ": assembling " (buffer-name) "..."))
+      (if (= 0 (call-process assembler nil "*Uxntal*" nil (buffer-name) out))
+	  (progn
+	    (message (concat "Launching " out "..."))
+	    (start-process program "*Uxntal*" "uxnemu" out))
+	(message (concat "Failed to assemble " out))))))
 
+(defun uxntal-insert-decimal-as-hex (arg)
+  "Convert a user provided decimal to hex and insert at point"
+  (interactive "sDecimal value: ")
+  (insert (format "#%04x" (string-to-number arg))))
+
+(defun uxntal-decimal-value ()
+  "Message the decimal value of the current-word to the minibuffer"
+  (interactive)
+  (message (number-to-string (string-to-number (current-word t t) 16))))
 
 (define-derived-mode uxntal-mode
   fundamental-mode "Uxntal"
@@ -81,7 +97,8 @@ TODO improve this so that it actually processes the buffer and not the file"
 
 ;; Key Bindings
 (define-key uxntal-mode-map (kbd "C-x C-e") 'uxntal-eval-buffer)
-
+(define-key uxntal-mode-map (kbd "C-c t h") 'uxntal-insert-decimal-as-hex)
+(define-key uxntal-mode-map (kbd "C-c t d") 'uxntal-decimal-value)
 
 (provide 'uxntal-mode)
 ;;; uxntal-mode.el ends here
