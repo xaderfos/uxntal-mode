@@ -39,6 +39,6 @@ The following configuration has been tested with a vanilla `.emacs.d`. Trying to
 
 ## Screenshot
 
-uxntal-mode with gruvbox-dark-medium theme on a vanilla Emacs installation
+uxntal-mode on gruvbox-dark-medium and whiteboard theme on a vanilla Emacs installation
 
 ![uxntal-mode screenshot with misterioso theme on a vanilla Emacs installation](uxntal-mode.png)
